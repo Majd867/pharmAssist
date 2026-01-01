@@ -1,11 +1,16 @@
-class UserLoginModel{
-  final String userName;
+class UserLoginModel {
+  final String username;
   final String password;
-  final bool isAdmin;
 
   const UserLoginModel({
-    required this.userName,
+    required this.username,
     required this.password,
-    required this.isAdmin
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'password': password,
+    };
+  }
 }

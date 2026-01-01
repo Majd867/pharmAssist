@@ -1,6 +1,7 @@
+
 import 'package:flutter/material.dart';
-import '../../constants.dart';
-import '../../models/category_model.dart';
+import 'package:pharma_ssist/constants.dart';
+import 'package:pharma_ssist/models/category_model.dart';
 
 class CustomCategoryButton extends StatelessWidget {
   final CategoryModel category;
@@ -23,6 +24,7 @@ class CustomCategoryButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(6, 8, 0, 2),
         child: Container(
+          height: 45,
           constraints: const BoxConstraints(minWidth: 120),
           decoration: BoxDecoration(
             color: buttonColor,

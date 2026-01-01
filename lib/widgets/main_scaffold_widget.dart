@@ -5,7 +5,6 @@ import 'package:pharma_ssist/screens/public_screens/home_page_screen.dart';
 import 'package:pharma_ssist/widgets/for_bills/bill_pop_up_menu.dart';
 import 'package:pharma_ssist/widgets/for_inventory/search_view.dart';
 import 'package:pharma_ssist/widgets/for_home_page/side_menu.dart';
-import '../models/user_login_model.dart';
 import '../screens/public_screens/bills_screen.dart';
 import '../screens/public_screens/inventory_screen.dart';
 
@@ -18,11 +17,6 @@ class MainScaffoldWidget extends StatefulWidget {
 }
 
 class _MainScaffoldWidgetState extends State<MainScaffoldWidget> {
-  UserLoginModel user = const UserLoginModel(
-    userName: 'Majd darawcheh',
-    password: 'lll',
-    isAdmin: true,
-  );
 
   final PageController pageController = PageController(initialPage: 1);
   int currentIndex = 1;
@@ -112,7 +106,7 @@ class _MainScaffoldWidgetState extends State<MainScaffoldWidget> {
                   ]
                 : [],
       ),
-      drawer: SideMenu(user: user),
+      drawer: const SideMenu(),
       bottomNavigationBar: CurvedNavigationBar(
         height: 65,
         color: beforeDarkPurple,

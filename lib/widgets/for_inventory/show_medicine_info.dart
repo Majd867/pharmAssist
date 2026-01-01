@@ -25,7 +25,7 @@ class ShowMedicineInfo extends StatelessWidget {
           CustomText(text: 'Scientific Name: ${medicine.scientificName}'),
           const SizedBox(height: 12),
 
-          CustomText(text: 'Effects: ${medicine.category}.'),
+          CustomText(text: 'Category: ${medicine.category}.'),
           const SizedBox(height: 12),
 
           CustomText(text: 'Manufacturer: ${medicine.manufacturer}.'),
@@ -58,8 +58,8 @@ class ShowMedicineInfo extends StatelessWidget {
             title: 'Done',
             buttonColor: middleShadePurple,
             titleColor: white,
-            height: 40,
-            width: 80,
+            height: 45,
+            width: 85,
             fontSize: 18,
           ),
         ),

@@ -5,7 +5,7 @@ import '../helper/api.dart';
 
 class CategoryService {
   Future<List<CategoryModel>> getCategories() async {
-    List<dynamic> data = await Api().get('$baseUrl/GetAllCategories');
+    List<dynamic> data = await Api().get('$baseUrl/GetAllCategories', '');
     List<CategoryModel> categoryList = [];
 
     for (var element in data) {

@@ -4,7 +4,7 @@ import 'package:pharma_ssist/models/sale_bill.dart';
 
 class CustomerBillService{
   Future<List<SaleBillModel>> getSalesBills() async{
-    final List<dynamic> data = await Api().get('$baseUrl/');
+    final List<dynamic> data = await Api().get('$baseUrl/GetPharmacistSales', '');
     List<SaleBillModel> salesBills = [];
 
     for(var element in data){

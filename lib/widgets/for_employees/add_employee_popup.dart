@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pharma_ssist/controllers/pharmacist_register_controller.dart';
+import 'package:pharma_ssist/models/pharmacist_model.dart';
 import '../../constants.dart';
 import '../customs/custom_button.dart';
 
@@ -19,38 +22,21 @@ class _AddEmployeePopupState extends State<AddEmployeePopup> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController monthlySalaryController = TextEditingController();
-  final TextEditingController employmentDateController = TextEditingController();
 
   bool _obscurePassword = true;
-
   String? selectedRole;
+  bool isAdmin = false;
+
   final List<String> roles = ['Admin Pharmacist', 'Normal Pharmacist'];
-
-  Future<void> _pickEmploymentDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-
-    if (picked != null) {
-      setState(() {
-        employmentDateController.text = "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
-      });
-    }
-  }
 
   @override
   void dispose() {
-    // Dispose controllers to avoid memory leaks
     firstnameController.dispose();
     lastnameController.dispose();
     usernameController.dispose();
     phoneController.dispose();
     passwordController.dispose();
     monthlySalaryController.dispose();
-    employmentDateController.dispose();
     super.dispose();
   }
 
@@ -112,35 +98,6 @@ class _AddEmployeePopupState extends State<AddEmployeePopup> {
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                   const SizedBox(height: 16),
-
-                  // Employment Date picker field
-                  TextFormField(
-                    controller: employmentDateController,
-                    readOnly: true,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.calendar_month, color: Colors.grey),
-                      hintText: 'Employment Date',
-                      hintStyle: TextStyle(color: Colors.grey),
-                      border: UnderlineInputBorder(),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select Employment Date';
-                      }
-                      return null;
-                    },
-                    onTap: _pickEmploymentDate,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Role dropdown
                   DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.admin_panel_settings, color: Colors.grey),
@@ -163,6 +120,7 @@ class _AddEmployeePopupState extends State<AddEmployeePopup> {
                     onChanged: (value) {
                       setState(() {
                         selectedRole = value;
+                        isAdmin = value == 'Admin Pharmacist';
                       });
                     },
                     validator: (value) {
@@ -192,14 +150,35 @@ class _AddEmployeePopupState extends State<AddEmployeePopup> {
                 ),
                 const SizedBox(width: 7),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (_formKey.currentState!.validate()) {
-                      // You can collect the form data here including selectedRole
-                      Navigator.pop(context);
-                      // Example: print collected data
-                      print('First Name: ${firstnameController.text}');
-                      print('Role: $selectedRole');
-                      // handle submission here
+                      final newPharmacist = PharmacistModel(
+                        firstname: firstnameController.text.trim(),
+                        lastname: lastnameController.text.trim(),
+                        username: usernameController.text.trim(),
+                        phone: phoneController.text.trim(),
+                        password: passwordController.text.trim(),
+                        salary: int.parse(monthlySalaryController.text.trim()),
+                        isAdmin: isAdmin,
+                      );
+
+                      try {
+                        await PharmacistController().pharmacistRegisterService(newPharmacist);
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Pharmacist registered successfully')),
+                          );
+                          Navigator.pop(context);
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          log(e.toString());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Registration failed: $e')),
+                          );
+                        }
+                      }
                     }
                   },
                   child: const CustomButton(
@@ -266,7 +245,7 @@ class _AddEmployeePopupState extends State<AddEmployeePopup> {
           return 'Password must be at least 8 characters';
         }
 
-        if (hint == 'Phone Number' && !RegExp(r'^\d+$').hasMatch(value) && value.length != 10) {
+        if (hint == 'Phone Number' && (!RegExp(r'^\d{10}$').hasMatch(value))) {
           return 'Enter a valid phone number';
         }
 
@@ -276,7 +255,6 @@ class _AddEmployeePopupState extends State<AddEmployeePopup> {
             return 'Enter a valid salary greater than 0';
           }
         }
-
         return null;
       },
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pharma_ssist/constants.dart';
 import 'package:pharma_ssist/widgets/customs/custom_button.dart';
 import 'package:pharma_ssist/widgets/for_employees/add_employee_popup.dart';
-
-import '../../constants.dart';
+import 'package:pharma_ssist/widgets/for_employees/pharmacist_card_list_widget.dart';
 
 class EmployeesScreen extends StatelessWidget {
   const EmployeesScreen({super.key});
@@ -12,13 +12,11 @@ class EmployeesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: white,
-        ),
+        iconTheme: const IconThemeData(color: white),
         backgroundColor: beforeDarkPurple,
         centerTitle: true,
         title: const Text(
-          'Pharmacists management',
+          'Pharmacists Management',
           style: TextStyle(
             color: white,
             fontSize: 24,
@@ -29,22 +27,26 @@ class EmployeesScreen extends StatelessWidget {
       backgroundColor: softGray,
       body: Stack(
         children: [
+          const PharmacistCardListWidget(),
+          const SizedBox(
+            height: 800,
+          ),
           Positioned(
             bottom: 30,
             left: 50,
             right: 50,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 showDialog(
-                    context: context,
-                    builder: (context) => const AddEmployeePopup(),
+                  context: context,
+                  builder: (context) => const AddEmployeePopup(),
                 );
               },
               child: const CustomButton(
                 icon: Icons.add,
                 iconSize: 36,
                 iconColor: white,
-                title: 'Add pharmacist',
+                title: 'Add Pharmacist',
                 buttonColor: middleShadePurple,
                 titleColor: white,
                 height: 60,

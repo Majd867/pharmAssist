@@ -8,6 +8,7 @@ import 'package:pharma_ssist/screens/public_screens/profile_screen.dart';
 import 'package:pharma_ssist/widgets/main_scaffold_widget.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const PharmAssistApp());
 }
 
@@ -27,7 +28,7 @@ class PharmAssistApp extends StatelessWidget {
         OrderSuppliesScreen.id : (context)=> const OrderSuppliesScreen(),
         CreateCustomerOrderScreen.id : (context)=> const CreateCustomerOrderScreen(),
         EmployeesScreen.id : (context)=> const EmployeesScreen(),
-
+        //EmployeeInfo.id : (context)=> const EmployeeInfo(),
       },
       debugShowCheckedModeBanner: false,
       initialRoute: LogInScreen.id,

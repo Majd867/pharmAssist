@@ -4,7 +4,7 @@ import 'package:pharma_ssist/models/supply_order_model.dart';
 
 class SupplyOrderService{
   Future<List<SupplyOrderModel>> getSupplyOrderBills() async{
-    final List<dynamic> data = await Api().get('$baseUrl/');
+    final List<dynamic> data = await Api().get('$baseUrl/GetPharmacistPurchase', '');
     List<SupplyOrderModel> supplyOrders = [];
 
     for(var element in data){

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pharma_ssist/models/user_login_model.dart';
 import 'package:pharma_ssist/screens/admin_screens/employees_screen.dart';
 import 'package:pharma_ssist/screens/public_screens/contacts_screen.dart';
 import 'package:pharma_ssist/screens/public_screens/profile_screen.dart';
 import 'package:pharma_ssist/widgets/customs/custom_list_tile.dart';
 import 'package:pharma_ssist/widgets/for_home_page/log_out_pop_up.dart';
 import '../../constants.dart';
+import '../../helper/info_storage.dart';
 
 class SideMenu extends StatelessWidget {
-  const SideMenu({super.key, required this.user});
-  final UserLoginModel user;
+  const SideMenu({super.key,});
 
   @override
   Widget build(BuildContext context) {
+    final session = SessionManager();
+    int isAdmin = session.isAdmin;
+    String username = session.userName;
+
     return Drawer(
       backgroundColor: white,
       shadowColor: Colors.white24,
@@ -44,7 +47,7 @@ class SideMenu extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
-                      user.userName,
+                      username,
                       style: const TextStyle(
                         color: darkPurple,
                         fontSize: 23,
@@ -71,7 +74,7 @@ class SideMenu extends StatelessWidget {
           ),
 
 
-          if (user.isAdmin)
+          if (isAdmin == 1)
             CustomListTile(
               title: 'Income Statistics',
               icon: const Icon(Icons.query_stats),
@@ -98,7 +101,7 @@ class SideMenu extends StatelessWidget {
           ),
 
 
-          if (user.isAdmin)
+          if (isAdmin == 1)
             CustomListTile(
               title: 'Employees',
               icon: const Icon(Icons.people_alt),
